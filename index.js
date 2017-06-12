@@ -1,4 +1,4 @@
-import VuetifyAudio from '@/src/vuetifyaudio.vue'
+import VuetifyAudio from './src/vuetifyaudio.vue'
 
 export default VuetifyAudio
 export { VuetifyAudio }
