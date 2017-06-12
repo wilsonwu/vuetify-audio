@@ -11,6 +11,8 @@ Update soon
 
 Use npm: ```Update soon```
 
+Currently please just clone and put it in your code to use it.
+
 ### Usage
 
 Add below code into your ```<script>```:
