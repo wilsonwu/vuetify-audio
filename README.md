@@ -32,14 +32,14 @@ Add below code into your ```<script>```:
 import VuetifyAudio from 'vuetify-audio';
 
 export default {
-	data() {
-		return {
-			file: 'http://www.noiseaddicts.com/samples_1w72b820/290.mp3',
-		};
-	},
-	components: {
-		'vuetify-audio': VuetifyAudio
-	},
+    data() {
+        return {
+            file: 'http://www.noiseaddicts.com/samples_1w72b820/290.mp3',
+        };
+    },
+    components: {
+        'vuetify-audio': VuetifyAudio
+    },
 }
 
 ```
@@ -52,7 +52,10 @@ And below code in the ```<template>```:
 ### Attributes
 
  - **file** (String) is required; 
-  
+
+### Known Issues
+1. Audio play pregress bar can't support drag only support click
+
 ### ToDo
 
  - ~~Create online demo~~
