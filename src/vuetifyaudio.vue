@@ -16,7 +16,7 @@
                 <v-icon v-if="loaded === false">refresh</v-icon>
                 <v-icon v-else>get_app</v-icon>
             </v-btn>
-            <v-slider v-model="percentage" dark></v-slider>
+            <v-slider @click.native="setPosition()" v-model="percentage" dark></v-slider>
             <p>{{ currentTime }} / {{ duration }}</p>
         </v-card-text>
         <audio id="player" ref="player" :src="file"></audio>
@@ -50,14 +50,17 @@
                 loaded: false,
                 playing: false,
                 paused: false,
-                ended: false,
                 percentage: 0,
                 currentTime: '00:00:00',
                 audio: undefined,
                 totalDuration: 0,
             }
         },
+
         methods: {
+            setPosition () {
+                this.audio.currentTime = parseInt(this.audio.duration / 100 * this.percentage);
+            },
             stop () {
                 this.paused = this.playing = false
                 this.audio.pause()
@@ -104,7 +107,6 @@
                 }
             },
             _handleEnded () {
-                this.ended = true;
                 this.paused = this.playing = false;
             },
             init: function () {
