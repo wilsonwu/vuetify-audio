@@ -19,7 +19,7 @@
             <v-slider v-model="percentage" dark></v-slider>
             <p>{{ currentTime }} / {{ duration }}</p>
         </v-card-text>
-        <audio controls id="player" ref="player" :src="file"></audio>
+        <audio id="player" ref="player" :src="file"></audio>
     </v-card>
 </template>
 <script>
