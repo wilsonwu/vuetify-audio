@@ -11,26 +11,25 @@ Update soon
 
 Use npm: ```npm install vuetify-audio```
 
-Currently please just clone and put it in your code to use it.
-
 ### Usage
 
 Add below code into your ```<script>```:
 ```
-import VuetifyAudio from 'vuetify-audio';
-data() {
-  return {
-    file: 'http://www.noiseaddicts.com/samples_1w72b820/290.mp3',
-  };
-},
-components: {
-  'vuetify-audio': VuetifyAudio
-},
+    import VuetifyAudio from 'vuetify-audio';
+
+    data() {
+        return {
+            file: 'http://www.noiseaddicts.com/samples_1w72b820/290.mp3',
+        };
+    },
+    components: {
+        'vuetify-audio': VuetifyAudio
+    },
 ```
 
 And below code in the ```<template>```:
 ```
-<vuetify-audio :file="file"></vuetify-audio>
+    <vuetify-audio :file="file"></vuetify-audio>
 ```
 
 ### Attributes
@@ -42,6 +41,8 @@ And below code in the ```<template>```:
  - Create online demo
  - Create npm install
  - Add customize styles for component
+ - Add event for start audio
+ - Add event for end audio
 
 ### License
 
