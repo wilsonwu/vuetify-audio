@@ -15,9 +15,12 @@ Use npm: ```npm install vuetify-audio```
 
 ### Usage
 At first make sure your project is Vue project, and has ```Vuetify``` as UI framework:
+1. Install Vuetify:
 ```
 npm install vuetify --save-dev
-
+```
+2. Add Vuetify to ```app.js``` or ```main.js```:
+```
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 
@@ -28,14 +31,17 @@ Add below code into your ```<script>```:
 ```
 import VuetifyAudio from 'vuetify-audio';
 
-data() {
-    return {
-        file: 'http://www.noiseaddicts.com/samples_1w72b820/290.mp3',
-    };
-},
-components: {
-    'vuetify-audio': VuetifyAudio
-},
+export default {
+	data() {
+		return {
+			file: 'http://www.noiseaddicts.com/samples_1w72b820/290.mp3',
+		};
+	},
+	components: {
+		'vuetify-audio': VuetifyAudio
+	},
+}
+
 ```
 
 And below code in the ```<template>```:
