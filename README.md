@@ -7,7 +7,7 @@ Vue.js sound audio player base on Vuetify UI framework. Covers audio-tag API and
 
 ### Demo
 
-Update soon
+https://wilsonwu.github.io/dist/index.html#/vuetifyaudio
 
 ### Installation
 
@@ -55,8 +55,8 @@ And below code in the ```<template>```:
   
 ### ToDo
 
- - Create online demo
- - Create npm install
+ - ~~Create online demo~~
+ - ~~Create npm install~~
  - Add customize styles for component
  - Add event for start audio
  - Add event for end audio
