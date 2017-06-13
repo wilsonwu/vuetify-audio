@@ -1,5 +1,7 @@
 # vuetify-audio
-## Vue.js + Vuetify audio player
+<a href="https://www.npmjs.com/package/vuetify-audio"><img src="https://img.shields.io/npm/dt/vuetify-audio.svg" alt="Downloads"></a>
+<a href="https://www.npmjs.com/package/vuetify-audio"><img src="https://img.shields.io/npm/v/vuetify-audio.svg" alt="Version"></a>
+<a href="https://www.npmjs.com/package/vuetify-audio"><img src="https://img.shields.io/npm/l/vuetify-audio.svg" alt="License"></a>
 
 Vue.js sound audio player base on Vuetify UI framework. Covers audio-tag API and adds more.
 
@@ -24,21 +26,21 @@ Vue.use(Vuetify);
 
 Add below code into your ```<script>```:
 ```
-    import VuetifyAudio from 'vuetify-audio';
+import VuetifyAudio from 'vuetify-audio';
 
-    data() {
-        return {
-            file: 'http://www.noiseaddicts.com/samples_1w72b820/290.mp3',
-        };
-    },
-    components: {
-        'vuetify-audio': VuetifyAudio
-    },
+data() {
+    return {
+        file: 'http://www.noiseaddicts.com/samples_1w72b820/290.mp3',
+    };
+},
+components: {
+    'vuetify-audio': VuetifyAudio
+},
 ```
 
 And below code in the ```<template>```:
 ```
-    <vuetify-audio :file="file"></vuetify-audio>
+<vuetify-audio :file="file"></vuetify-audio>
 ```
 
 ### Attributes
