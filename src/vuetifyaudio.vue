@@ -2,7 +2,7 @@
     <v-card style="text-align: center">
         <v-card-text>
             <v-btn outline icon class="teal--text" @click.native="playing ? pause() : play()" :disabled="loaded === false">
-                <v-icon v-if="playing === false">play_arrow</v-icon>
+                <v-icon v-if="playing === false || paused === true">play_arrow</v-icon>
                 <v-icon v-else>pause</v-icon>
             </v-btn>
             <v-btn outline icon class="teal--text" @click.native="stop()" :disabled="loaded === false">
