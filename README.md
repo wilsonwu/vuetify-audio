@@ -9,7 +9,7 @@ Update soon
 
 ### Installation
 
-Use npm: ```Update soon```
+Use npm: ```npm install vuetify-audio```
 
 Currently please just clone and put it in your code to use it.
 
