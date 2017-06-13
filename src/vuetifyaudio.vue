@@ -50,6 +50,7 @@
                 loaded: false,
                 playing: false,
                 paused: false,
+                ended: false,
                 percentage: 0,
                 currentTime: '00:00:00',
                 audio: undefined,
@@ -103,7 +104,8 @@
                 }
             },
             _handleEnded () {
-                this.isEnded = true;
+                this.ended = true;
+                this.paused = this.playing = false;
             },
             init: function () {
                 this.audio.addEventListener('timeupdate', this._handlePlayingUI);
