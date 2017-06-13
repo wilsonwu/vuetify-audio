@@ -14,6 +14,8 @@ Use npm: ```npm install vuetify-audio```
 ### Usage
 At first make sure your project is Vue project, and has ```Vuetify``` as UI framework:
 ```
+npm install vuetify --save-dev
+
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 
