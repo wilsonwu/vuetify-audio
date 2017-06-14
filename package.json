@@ -1,42 +1,42 @@
 {
-    "name": "vuetify-audio",
-    "version": "0.0.5",
-    "description": "vue.js audio files player with vuetifyjs UI framework",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "watch-http-server -s -p 8888",
-        "lint": "eslint --ext .js,.vue src"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/wilsonwu/vuetify-audio.git"
-    },
-    "keywords": [
-        "sound",
-        "mp3",
-        "wav",
-        "player",
-        "vue",
-        "vue.js",
-        "vuetify",
-        "vuetifyjs"
-    ],
-    "author": "Wilson Wu",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/wilsonwu/vuetify-audio/issues"
-    },
-    "homepage": "https://github.com/wilsonwu/vuetify-audio/issues#readme",
-    "devDependencies": {
-        "watch-http-server": "^0.7.6",
-        "babel-eslint": "^7.1.1",
-        "eslint": "^3.14.1",
-        "eslint-friendly-formatter": "^2.0.7",
-        "eslint-loader": "^1.6.1",
-        "eslint-plugin-html": "^2.0.0",
-        "eslint-config-standard": "^6.2.1",
-        "eslint-plugin-promise": "^3.4.0",
-        "eslint-plugin-standard": "^2.0.1"
-    }
+  "name": "vuetify-audio",
+  "version": "0.0.6",
+  "description": "vue.js audio files player with vuetifyjs UI framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "watch-http-server -s -p 8888",
+    "lint": "eslint --ext .js,.vue src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wilsonwu/vuetify-audio.git"
+  },
+  "keywords": [
+    "sound",
+    "mp3",
+    "wav",
+    "player",
+    "vue",
+    "vue.js",
+    "vuetify",
+    "vuetifyjs"
+  ],
+  "author": "Wilson Wu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wilsonwu/vuetify-audio/issues"
+  },
+  "homepage": "https://github.com/wilsonwu/vuetify-audio/issues#readme",
+  "devDependencies": {
+    "watch-http-server": "^0.7.6",
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.14.1",
+    "eslint-friendly-formatter": "^2.0.7",
+    "eslint-loader": "^1.6.1",
+    "eslint-plugin-html": "^2.0.0",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.1"
+  }
 }
