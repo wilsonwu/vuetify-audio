@@ -11,7 +11,7 @@ https://wilsonwu.github.io/dist/index.html#/vuetifyaudio
 
 ### Installation
 
-Use npm: ```npm install vuetify-audio```
+Use npm: ```npm install vuetify-audio --save```
 
 ### Usage
 At first make sure your project is Vue project, and has ```Vuetify``` as UI framework:
@@ -40,29 +40,36 @@ export default {
     components: {
         'vuetify-audio': VuetifyAudio
     },
+    // If you want to use ended callback add below code
+    methods: {
+        audioFinish () {
+            console.log('You see this means audio finish.');
+        }
+    },
 }
 
 ```
 
 And below code in the ```<template>```:
 ```
-<vuetify-audio :file="file"></vuetify-audio>
+<vuetify-audio :file="file" :ended="audioFinish"></vuetify-audio>
 ```
+
 
 ### Attributes
 
- - **file** (String) is required; 
+ - **file** (String): Set audio file for the audio player
+ - **ended** (Function): Set callback function name after audio finish
 
 ### Known Issues
-1. Audio play pregress bar can't support drag only support click
+1. Audio play pregress bar can't support drag, only support click.
 
 ### ToDo
 
  - ~~Create online demo~~
  - ~~Create npm install~~
  - Add customize styles for component
- - Add event for start audio
- - Add event for end audio
+ - ~~Add event for end audio~~
 
 ### License
 

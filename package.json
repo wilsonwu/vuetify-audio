@@ -1,7 +1,7 @@
 {
   "name": "vuetify-audio",
-  "version": "0.0.6",
-  "description": "vue.js audio files player with vuetifyjs UI framework",
+  "version": "0.0.7",
+  "description": "Vue.js audio files player with Vuetify UI framework",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,6 +13,7 @@
     "url": "git+https://github.com/wilsonwu/vuetify-audio.git"
   },
   "keywords": [
+    "audio",
     "sound",
     "mp3",
     "wav",
