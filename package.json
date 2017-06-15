@@ -1,6 +1,6 @@
 {
   "name": "vuetify-audio",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Vue.js audio files player with Vuetify UI framework",
   "main": "index.js",
   "scripts": {

@@ -60,6 +60,7 @@ And below code in the ```<template>```:
 
  - **file** (String): Set audio file for the audio player
  - **ended** (Function): Set callback function name after audio finish
+ - **canPlay** (Function): Set callback function name when audio ready for playing
 
 ### Known Issues
 1. Audio play pregress bar can't support drag, only support click.

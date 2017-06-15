@@ -19,7 +19,7 @@
             <v-slider @click.native="setPosition()" v-model="percentage" dark></v-slider>
             <p>{{ currentTime }} / {{ duration }}</p>
         </v-card-text>
-        <audio id="player" ref="player" v-on:ended="ended" :src="file"></audio>
+        <audio id="player" ref="player" v-on:ended="ended" v-on:canplay="canPlay" :src="file"></audio>
     </v-card>
 </template>
 <script>
@@ -39,6 +39,10 @@
                 default: false
             },
             ended: {
+                type: Function,
+                default: () => {},
+            },
+            canPlay: {
                 type: Function,
                 default: () => {},
             },
