@@ -20,7 +20,7 @@ At first make sure your project is Vue project, and has ```Vuetify``` as UI fram
 npm install vuetify --save-dev
 ```
 2. Add Vuetify to ```app.js``` or ```main.js```:
-```
+```js
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 
@@ -28,7 +28,7 @@ Vue.use(Vuetify);
 ```
 
 Add below code into your ```<script>```:
-```
+```js
 import VuetifyAudio from 'vuetify-audio';
 
 export default {
@@ -51,7 +51,7 @@ export default {
 ```
 
 And below code in the ```<template>```:
-```
+```js
 <vuetify-audio :file="file" :ended="audioFinish"></vuetify-audio>
 ```
 
