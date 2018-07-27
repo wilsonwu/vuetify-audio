@@ -52,6 +52,7 @@
         },
         data () {
             return {
+                firstPlay: true,
                 isMuted: false,
                 loaded: false,
                 playing: false,
@@ -122,6 +123,13 @@
                 this.currentTime = formatTime(this.audio.currentTime)
             },
             _handlePlayPause: function (e) {
+                if (e.type === 'play' && this.firstPlay) {
+                    // in some situations, audio.currentTime is the end one on chrome
+                    this.audio.currentTime = 0;
+                    if (this.firstPlay) {
+                        this.firstPlay = false;
+                    }
+                }
                 if (e.type === 'pause' && this.paused === false && this.playing === false) {
                     this.currentTime = '00:00:00'
                 }
