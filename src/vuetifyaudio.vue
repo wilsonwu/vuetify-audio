@@ -1,19 +1,19 @@
 <template>
     <v-card style="text-align: center">
         <v-card-text>
-            <v-btn outline icon class="teal--text" @click.native="playing ? pause() : play()" :disabled="loaded === false">
-                <v-icon v-if="playing === false || paused === true">play_arrow</v-icon>
+            <v-btn outline icon class="teal--text" @click.native="playing ? pause() : play()" :disabled="!loaded">
+                <v-icon v-if="!playing || paused">play_arrow</v-icon>
                 <v-icon v-else>pause</v-icon>
             </v-btn>
-            <v-btn outline icon class="teal--text" @click.native="stop()" :disabled="loaded === false">
+            <v-btn outline icon class="teal--text" @click.native="stop()" :disabled="!loaded">
                 <v-icon>stop</v-icon>
             </v-btn>
-            <v-btn outline icon class="teal--text" @click.native="mute()" :disabled="loaded === false">
-                <v-icon v-if="isMuted === false">volume_up</v-icon>
+            <v-btn outline icon class="teal--text" @click.native="mute()" :disabled="!loaded">
+                <v-icon v-if="!isMuted">volume_up</v-icon>
                 <v-icon v-else>volume_off</v-icon>
             </v-btn>
             <v-btn outline icon class="teal--text" @click.native="loaded ? download() : reload()">
-                <v-icon v-if="loaded === false">refresh</v-icon>
+                <v-icon v-if="!loaded">refresh</v-icon>
                 <v-icon v-else>get_app</v-icon>
             </v-btn>
             <v-slider @click.native="setPosition()" v-model="percentage" dark :disabled="!loaded"></v-slider>
