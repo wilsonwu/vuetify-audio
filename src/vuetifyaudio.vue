@@ -98,9 +98,23 @@
             },
             _handleLoaded: function () {
                 if (this.audio.readyState >= 2) {
+                    if (this.audio.duration === Infinity) {
+                        // Fix duration for streamed audio source or blob based
+                        // https://stackoverflow.com/questions/38443084/how-can-i-add-predefined-length-to-audio-recorded-from-mediarecorder-in-chrome/39971175#39971175
+                        this.audio.currentTime = 1e101;
+                        this.audio.ontimeupdate = () => {
+                            this.audio.ontimeupdate = () => {}
+                            this.audio.currentTime = 0
+                            this.totalDuration = parseInt(this.audio.duration)
+                            this.loaded = true;
+                        }
+                    } else {
+                        this.totalDuration = parseInt(this.audio.duration)
+                        this.loaded = true
+                    }
+
                     if (this.autoPlay) this.audio.play()
-                    this.loaded = true
-                    this.totalDuration = parseInt(this.audio.duration)
+
                 } else {
                     throw new Error('Failed to load sound file')
                 }
