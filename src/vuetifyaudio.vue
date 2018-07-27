@@ -16,7 +16,7 @@
                 <v-icon v-if="loaded === false">refresh</v-icon>
                 <v-icon v-else>get_app</v-icon>
             </v-btn>
-            <v-slider @click.native="setPosition()" v-model="percentage" dark :disabled="loaded === true"></v-slider>
+            <v-slider @click.native="setPosition()" v-model="percentage" dark :disabled="!loaded"></v-slider>
             <p>{{ currentTime }} / {{ duration }}</p>
         </v-card-text>
         <audio id="player" ref="player" v-on:ended="ended" v-on:canplay="canPlay" :src="file"></audio>
