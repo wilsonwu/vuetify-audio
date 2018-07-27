@@ -76,8 +76,7 @@
             play () {
                 if (this.playing) return
                 this.paused = false
-                this.audio.play()
-                this.playing = true
+                this.audio.play().then(_ => this.playing = true)
             },
             pause () {
                 this.paused = !this.paused;
