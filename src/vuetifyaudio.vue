@@ -1,32 +1,30 @@
 <template>
     <v-card style="text-align: center">
         <v-card-text>
-            <v-btn outline icon class="teal--text" @click.native="playing ? pause() : play()" :disabled="loaded === false">
-                <v-icon v-if="playing === false || paused === true">play_arrow</v-icon>
+            <v-btn outline icon class="teal--text" @click.native="playing ? pause() : play()" :disabled="!loaded">
+                <v-icon v-if="!playing || paused">play_arrow</v-icon>
                 <v-icon v-else>pause</v-icon>
             </v-btn>
-            <v-btn outline icon class="teal--text" @click.native="stop()" :disabled="loaded === false">
+            <v-btn outline icon class="teal--text" @click.native="stop()" :disabled="!loaded">
                 <v-icon>stop</v-icon>
             </v-btn>
-            <v-btn outline icon class="teal--text" @click.native="mute()" :disabled="loaded === false">
-                <v-icon v-if="isMuted === false">volume_up</v-icon>
+            <v-btn outline icon class="teal--text" @click.native="mute()" :disabled="!loaded">
+                <v-icon v-if="!isMuted">volume_up</v-icon>
                 <v-icon v-else>volume_off</v-icon>
             </v-btn>
             <v-btn outline icon class="teal--text" @click.native="loaded ? download() : reload()">
-                <v-icon v-if="loaded === false">refresh</v-icon>
+                <v-icon v-if="!loaded">refresh</v-icon>
                 <v-icon v-else>get_app</v-icon>
             </v-btn>
-            <v-slider @click.native="setPosition()" v-model="percentage" dark :disabled="loaded === true"></v-slider>
+            <v-slider @click.native="setPosition()" v-model="percentage" dark :disabled="!loaded"></v-slider>
             <p>{{ currentTime }} / {{ duration }}</p>
         </v-card-text>
         <audio id="player" ref="player" v-on:ended="ended" v-on:canplay="canPlay" :src="file"></audio>
     </v-card>
 </template>
 <script>
-    const formatTime = (secend) => {
-        let time = new Date(secend * 1000).toISOString().substr(11, 8)
-        return time
-    }
+    const formatTime = second => new Date(second * 1000).toISOString().substr(11, 8);
+
     export default {
         name: 'vuetify-audio',
         props: {
@@ -54,6 +52,7 @@
         },
         data () {
             return {
+                firstPlay: true,
                 isMuted: false,
                 loaded: false,
                 playing: false,
@@ -77,8 +76,7 @@
             play () {
                 if (this.playing) return
                 this.paused = false
-                this.audio.play()
-                this.playing = true
+                this.audio.play().then(_ => this.playing = true)
             },
             pause () {
                 this.paused = !this.paused;
@@ -98,9 +96,23 @@
             },
             _handleLoaded: function () {
                 if (this.audio.readyState >= 2) {
+                    if (this.audio.duration === Infinity) {
+                        // Fix duration for streamed audio source or blob based
+                        // https://stackoverflow.com/questions/38443084/how-can-i-add-predefined-length-to-audio-recorded-from-mediarecorder-in-chrome/39971175#39971175
+                        this.audio.currentTime = 1e101;
+                        this.audio.ontimeupdate = () => {
+                            this.audio.ontimeupdate = () => {}
+                            this.audio.currentTime = 0
+                            this.totalDuration = parseInt(this.audio.duration)
+                            this.loaded = true;
+                        }
+                    } else {
+                        this.totalDuration = parseInt(this.audio.duration)
+                        this.loaded = true
+                    }
+
                     if (this.autoPlay) this.audio.play()
-                    this.loaded = true
-                    this.totalDuration = parseInt(this.audio.duration)
+
                 } else {
                     throw new Error('Failed to load sound file')
                 }
@@ -110,6 +122,13 @@
                 this.currentTime = formatTime(this.audio.currentTime)
             },
             _handlePlayPause: function (e) {
+                if (e.type === 'play' && this.firstPlay) {
+                    // in some situations, audio.currentTime is the end one on chrome
+                    this.audio.currentTime = 0;
+                    if (this.firstPlay) {
+                        this.firstPlay = false;
+                    }
+                }
                 if (e.type === 'pause' && this.paused === false && this.playing === false) {
                     this.currentTime = '00:00:00'
                 }
