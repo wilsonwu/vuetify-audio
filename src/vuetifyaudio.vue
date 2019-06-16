@@ -14,7 +14,7 @@
             </v-btn>
             <v-btn outline icon class="teal--text" @click.native="loaded ? download() : reload()">
                 <v-icon v-if="!loaded">refresh</v-icon>
-                <v-icon v-else-if="downloadable">get_app</v-icon>
+                <v-icon v-if="downloadable">get_app</v-icon>
             </v-btn>
             <v-slider @click.native="setPosition()" v-model="percentage" dark :disabled="!loaded"></v-slider>
             <p>{{ currentTime }} / {{ duration }}</p>
