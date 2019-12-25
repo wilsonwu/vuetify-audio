@@ -1,22 +1,22 @@
 <template>
     <v-card style="text-align: center">
         <v-card-text>
-            <v-btn outlined icon class="teal--text" @click.native="playing ? pause() : play()" :disabled="!loaded">
+            <v-btn outlined icon class="ma-2" color="teal" @click.native="playing ? pause() : play()" :disabled="!loaded">
                 <v-icon v-if="!playing || paused">play_arrow</v-icon>
                 <v-icon v-else>pause</v-icon>
             </v-btn>
-            <v-btn outlined icon class="teal--text" @click.native="stop()" :disabled="!loaded">
+            <v-btn outlined icon class="ma-2" color="teal" @click.native="stop()" :disabled="!loaded">
                 <v-icon>stop</v-icon>
             </v-btn>
-            <v-btn outlined icon class="teal--text" @click.native="mute()" :disabled="!loaded">
+            <v-btn outlined icon class="ma-2" color="teal" @click.native="mute()" :disabled="!loaded">
                 <v-icon v-if="!isMuted">volume_up</v-icon>
                 <v-icon v-else>volume_off</v-icon>
             </v-btn>
-            <v-btn outlined icon class="teal--text" @click.native="loaded ? download() : reload()">
+            <v-btn outlined icon class="ma-2" color="teal" @click.native="loaded ? download() : reload()">
                 <v-icon v-if="!loaded">refresh</v-icon>
                 <v-icon v-else>get_app</v-icon>
             </v-btn>
-            <v-slider @click.native="setPosition()" v-model="percentage" dark :disabled="!loaded"></v-slider>
+            <v-progress-linear v-model="percentage" height="5" style="margin-top: 15px; margin-bottom: 15px;" @click.native="setPosition()" color="teal" :disabled="!loaded"></v-progress-linear>
             <p>{{ currentTime }} / {{ duration }}</p>
         </v-card-text>
         <audio id="player" ref="player" v-on:ended="ended" v-on:canplay="canPlay" :src="file"></audio>
