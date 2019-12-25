@@ -1,18 +1,18 @@
 <template>
     <v-card style="text-align: center">
         <v-card-text>
-            <v-btn outline icon class="teal--text" @click.native="playing ? pause() : play()" :disabled="!loaded">
+            <v-btn outlined icon class="teal--text" @click.native="playing ? pause() : play()" :disabled="!loaded">
                 <v-icon v-if="!playing || paused">play_arrow</v-icon>
                 <v-icon v-else>pause</v-icon>
             </v-btn>
-            <v-btn outline icon class="teal--text" @click.native="stop()" :disabled="!loaded">
+            <v-btn outlined icon class="teal--text" @click.native="stop()" :disabled="!loaded">
                 <v-icon>stop</v-icon>
             </v-btn>
-            <v-btn outline icon class="teal--text" @click.native="mute()" :disabled="!loaded">
+            <v-btn outlined icon class="teal--text" @click.native="mute()" :disabled="!loaded">
                 <v-icon v-if="!isMuted">volume_up</v-icon>
                 <v-icon v-else>volume_off</v-icon>
             </v-btn>
-            <v-btn outline icon class="teal--text" @click.native="loaded ? download() : reload()">
+            <v-btn outlined icon class="teal--text" @click.native="loaded ? download() : reload()">
                 <v-icon v-if="!loaded">refresh</v-icon>
                 <v-icon v-else>get_app</v-icon>
             </v-btn>
