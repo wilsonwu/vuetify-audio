@@ -71,7 +71,10 @@ And below code in the ```<template>```:
  - ~~Create npm install~~
  - Add customize styles for component
  - ~~Add event for end audio~~
-
+ - Add downloadable property for audio file
+ - Replace Slider to Linear Progress of Vuetify
+ - Fully support dark mode
+ 
 ### License
 
 MIT
