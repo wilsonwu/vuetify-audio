@@ -5,6 +5,13 @@
 
 Vue.js sound audio player base on Vuetify UI framework. Covers audio-tag API and adds more.
 
+## Features
+- Support most of audio play in this component.
+- You can set the color you want for all component buttons.
+- Support download the audio file.
+- After audio playing finished or before start the playing, you can do something.
+- Support Dark mode of Vuetify.
+
 ### Demo
 
 https://wilsonwu.github.io/dist/index.html#/vuetifyaudio
@@ -13,7 +20,7 @@ https://wilsonwu.github.io/dist/index.html#/vuetifyaudio
 
 Use npm: ```npm install vuetify-audio --save```
 
-### Usage
+### Prepare
 At first make sure your project is Vue project, and has ```Vuetify``` as UI framework:
 1. Install Vuetify:
 ```
@@ -27,40 +34,39 @@ import 'vuetify/dist/vuetify.min.css';
 Vue.use(Vuetify);
 ```
 
+You also can use Vue plugin to install ```Vuetify``` by only one line command:
+```
+vue add vuetify
+```
+
+Node: Make sure you are using the default Vuetify iconfont (mdi).
+
+### Usage
 Add below code into your ```<script>```:
 ```js
-import VuetifyAudio from 'vuetify-audio';
-
 export default {
-    data() {
-        return {
-            file: 'http://www.noiseaddicts.com/samples_1w72b820/290.mp3',
-        };
-    },
     components: {
-        'vuetify-audio': VuetifyAudio
+        VuetifyAudio: () => import('vuetify-audio'),
     },
-    // If you want to use ended callback add below code
-    methods: {
-        audioFinish () {
-            console.log('You see this means audio finish.');
-        }
-    },
+    data: () => ({
+        file: 'http://www.noiseaddicts.com/samples_1w72b820/290.mp3',
+    }),
 }
 
 ```
 
 And below code in the ```<template>```:
 ```js
-<vuetify-audio :file="file" :ended="audioFinish"></vuetify-audio>
+<vuetify-audio :file="file" color="success" :ended="audioFinish"></vuetify-audio>
 ```
 
 
 ### Attributes
 
- - **file** (String): Set audio file for the audio player
- - **ended** (Function): Set callback function name after audio finish
- - **canPlay** (Function): Set callback function name when audio ready for playing
+ - **file** (String) (Required): Set audio file for the audio player
+ - **ended** (Function) (Optional): Set callback function name after audio finish
+ - **canPlay** (Function) (Optional): Set callback function name when audio ready for playing
+ - **color** (String) (Optional): Set all component buttons color
 
 ### Known Issues
 1. Audio play pregress bar can't support drag, only support click.
@@ -69,10 +75,10 @@ And below code in the ```<template>```:
 
  - ~~Create online demo~~
  - ~~Create npm install~~
- - Add customize styles for component
+ - ~~Add customize collor for component~~
  - ~~Add event for end audio~~
  - Add downloadable property for audio file
- - Fully support dark mode
+ - ~~Fully support dark mode~~
  
 ### License
 
