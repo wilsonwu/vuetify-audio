@@ -12,9 +12,11 @@
                 <v-icon v-if="!isMuted">mdi-volume-high</v-icon>
                 <v-icon v-else>mdi-volume-mute</v-icon>
             </v-btn>
-            <v-btn outlined icon class="ma-2" :color="color" @click.native="loaded ? download() : reload()">
-                <v-icon v-if="!loaded">mdi-refresh</v-icon>
-                <v-icon v-else>mdi-download</v-icon>
+            <v-btn outlined icon class="ma-2" :color="color" @click.native="loaded ? download() : reload()" v-if="!loaded">
+                <v-icon>mdi-refresh</v-icon>
+            </v-btn>
+            <v-btn outlined icon class="ma-2" :color="color" @click.native="loaded ? download() : reload()" v-if="loaded && downloadable">
+                <v-icon>mdi-download</v-icon>
             </v-btn>
             <v-progress-linear v-model="percentage" height="5" style="margin-top: 15px; margin-bottom: 15px;" @click.native="setPosition()" :disabled="!loaded"></v-progress-linear>
             <p>{{ currentTime }} / {{ duration }}</p>
@@ -47,6 +49,10 @@
             color: {
                 type: String,
                 default: null
+            },
+            downloadable: {
+                type: Boolean,
+                default: false
             }
         },
         computed: {
@@ -79,8 +85,8 @@
             },
             play () {
                 if (this.playing) return
-                this.paused = false
                 this.audio.play().then(_ => this.playing = true)
+                this.paused = false
             },
             pause () {
                 this.paused = !this.paused;
@@ -124,6 +130,7 @@
             _handlePlayingUI: function (e) {
                 this.percentage = this.audio.currentTime / this.audio.duration * 100
                 this.currentTime = formatTime(this.audio.currentTime)
+                this.playing = true
             },
             _handlePlayPause: function (e) {
                 if (e.type === 'play' && this.firstPlay) {

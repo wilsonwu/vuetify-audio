@@ -11,6 +11,8 @@ Vue.js sound audio player base on Vuetify UI framework. Covers audio-tag API and
 - Support download the audio file.
 - After audio playing finished or before start the playing, you can do something.
 - Support Dark mode of Vuetify.
+- Support auto play, but if user didn't interact with the document first, the audio can't be played.
+- Support turn on and off audio download button.
 
 ### Demo
 
@@ -49,15 +51,15 @@ export default {
         VuetifyAudio: () => import('vuetify-audio'),
     },
     data: () => ({
-        file: 'http://www.noiseaddicts.com/samples_1w72b820/290.mp3',
+        file: 'http://www.hochmuth.com/mp3/Boccherini_Concerto_478-1.mp3',
     }),
 }
 
 ```
 
 And below code in the ```<template>```:
-```js
-<vuetify-audio :file="file" color="success" :ended="audioFinish"></vuetify-audio>
+```html
+<vuetify-audio :file="file" color="success" :ended="audioFinish" downloadable></vuetify-audio>
 ```
 
 
@@ -67,6 +69,8 @@ And below code in the ```<template>```:
  - **ended** (Function) (Optional): Set callback function name after audio finish
  - **canPlay** (Function) (Optional): Set callback function name when audio ready for playing
  - **color** (String) (Optional): Set all component buttons color
+ - **autoPlay** (Boolon) (Optional): Add it to make the audio auto play, but in some web browsers maybe failed, because some browsers need user active in the page first then allow sound auto play.
+ - **downloadable** (Boolon) (Optional): Add it to let the audio file can be downloaded.
 
 ### Known Issues
 1. Audio play pregress bar can't support drag, only support click.
@@ -77,8 +81,10 @@ And below code in the ```<template>```:
  - ~~Create npm install~~
  - ~~Add customize collor for component~~
  - ~~Add event for end audio~~
- - Add downloadable property for audio file
+ - ~~Add auto play audio~~
+ - ~~Add downloadable property for audio file~~
  - ~~Fully support dark mode~~
+ - Add increase or decrease volume of audio
  
 ### License
 
