@@ -79,8 +79,9 @@
                 this.audio.currentTime = parseInt(this.audio.duration / 100 * this.percentage);
             },
             stop () {
-                this.paused = this.playing = false
                 this.audio.pause()
+                this.paused = true
+                this.playing = false
                 this.audio.currentTime = 0
             },
             play () {
