@@ -69,8 +69,9 @@ And below code in the ```<template>```:
  - **ended** (Function) (Optional): Set callback function name after audio finish
  - **canPlay** (Function) (Optional): Set callback function name when audio ready for playing
  - **color** (String) (Optional): Set all component buttons color
- - **autoPlay** (Boolon) (Optional): Add it to make the audio auto play, but in some web browsers maybe failed, because some browsers need user active in the page first then allow sound auto play.
- - **downloadable** (Boolon) (Optional): Add it to let the audio file can be downloaded.
+ - **autoPlay** (Boolean) (Optional, default is false): Add it to make the audio auto play, but in some web browsers maybe failed, because some browsers need user active in the page first then allow sound auto play.
+ - **downloadable** (Boolean) (Optional, default is false): Add it to let the audio file can be downloaded.
+ - **flat** (Boolean) (Optional, default is false): When set to true, make the Vuetify Card style to flat, that you can combine other information/image/data with this control in your page.
 
 ### Known Issues
 1. Audio play pregress bar can't support drag, only support click.
@@ -84,6 +85,7 @@ And below code in the ```<template>```:
  - ~~Add auto play audio~~
  - ~~Add downloadable property for audio file~~
  - ~~Fully support dark mode~~
+ - ~~Add prop for Card flat~~
  - Add increase or decrease volume of audio
  
 ### License

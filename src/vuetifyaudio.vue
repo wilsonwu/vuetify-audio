@@ -1,5 +1,5 @@
 <template>
-    <v-card style="text-align: center">
+    <v-card style="text-align: center" :flat="flat == undefined || flat == false  ? false : true">
         <v-card-text>
             <v-btn outlined icon class="ma-2" :color="color" @click.native="playing ? pause() : play()" :disabled="!loaded">
                 <v-icon v-if="!playing || paused">mdi-play</v-icon>
@@ -30,6 +30,10 @@
     export default {
         name: 'vuetify-audio',
         props: {
+            flat: {
+                type: Boolean,
+                default: false
+            },
             file: {
                 type: String,
                 default: null
