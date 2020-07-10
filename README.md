@@ -13,6 +13,7 @@ Vue.js sound audio player base on Vuetify UI framework. Covers audio-tag API and
 - Support Dark mode of Vuetify.
 - Support auto play, but if user didn't interact with the document first, the audio can't be played.
 - Support turn on and off audio download button.
+- Support disable the Vuetify Card style, and you can use this component in your own Vuetify Card of your page.
 
 ### Demo
 
