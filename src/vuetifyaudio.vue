@@ -18,6 +18,7 @@
             <v-btn outlined icon class="ma-2" :color="color" @click.native="loaded ? download() : reload()" v-if="loaded && downloadable">
                 <v-icon>mdi-download</v-icon>
             </v-btn>
+            <v-slider v-model="playerVolume" prepend-icon="mdi-volume-high" max="1" step="0.01" min="0"></v-slider>
             <v-progress-linear v-model="percentage" height="5" style="margin-top: 15px; margin-bottom: 15px;" @click.native="setPosition()" :disabled="!loaded"></v-progress-linear>
             <p>{{ currentTime }} / {{ duration }}</p>
         </v-card-text>
@@ -75,6 +76,7 @@
                 currentTime: '00:00:00',
                 audio: undefined,
                 totalDuration: 0,
+                playerVolume: 0.5
             }
         },
 
@@ -104,7 +106,6 @@
             mute () {
                 this.isMuted = !this.isMuted
                 this.audio.muted = this.isMuted
-                this.volumeValue = this.isMuted ? 0 : 75
             },
             reload () {
                 this.audio.load();
@@ -133,6 +134,7 @@
                 }
             },
             _handlePlayingUI: function (e) {
+                this.audio.volume = this.playerVolume
                 this.percentage = this.audio.currentTime / this.audio.duration * 100
                 this.currentTime = formatTime(this.audio.currentTime)
                 this.playing = true
