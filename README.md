@@ -87,7 +87,7 @@ And below code in the ```<template>```:
  - ~~Add downloadable property for audio file~~
  - ~~Fully support dark mode~~
  - ~~Add prop for Card flat~~
- - Add increase or decrease volume of audio
+ - ~~Add increase or decrease volume of audio~~
  
 ### License
 
