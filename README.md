@@ -14,6 +14,7 @@ Vue.js sound audio player base on Vuetify UI framework. Covers audio-tag API and
 - Support auto play, but if user didn't interact with the document first, the audio can't be played.
 - Support turn on and off audio download button.
 - Support disable the Vuetify Card style, and you can use this component in your own Vuetify Card of your page.
+- You can set custom icons supported by vuetify v-icon component.
 
 ### Demo
 
@@ -42,7 +43,7 @@ You also can use Vue plugin to install ```Vuetify``` by only one line command:
 vue add vuetify
 ```
 
-Node: Make sure you are using the default Vuetify iconfont (mdi).
+Node: Make sure you are using the default Vuetify iconfont (mdi) or override the icon attributes with some other supported by v-icon component.
 
 ### Usage
 Add below code into your ```<script>```:
@@ -73,6 +74,13 @@ And below code in the ```<template>```:
  - **autoPlay** (Boolean) (Optional, default is false): Add it to make the audio auto play, but in some web browsers maybe failed, because some browsers need user active in the page first then allow sound auto play.
  - **downloadable** (Boolean) (Optional, default is false): Add it to let the audio file can be downloaded.
  - **flat** (Boolean) (Optional, default is false): When set to true, make the Vuetify Card style to flat, that you can combine other information/image/data with this control in your page.
+ - **playIcon** (String) (Optional, default is mdi-play): Set the icon for play
+ - **pauseIcon** (String) (Optional, default is mdi-pause): Set the icon for pause
+ - **stopIcon** (String) (Optional, default is mdi-stop): Set the icon for stop
+ - **refreshIcon** (String) (Optional, default is mdi-refresh): Set the icon for refresh
+ - **downloadIcon** (String) (Optional, default is mdi-download): Set the icon for download
+ - **volumeHighIcon** (String) (Optional, default is mdi-volume-high): Set the icon for volume
+ - **volumeMuteIcon** (String) (Optional, default is mdi-volume-mute): Set the icon for mute
 
 ### Known Issues
 1. Audio play pregress bar can't support drag, only support click.
@@ -88,6 +96,7 @@ And below code in the ```<template>```:
  - ~~Fully support dark mode~~
  - ~~Add prop for Card flat~~
  - ~~Add increase or decrease volume of audio~~
+ - ~~Add props for custom icons~~
  
 ### License
 

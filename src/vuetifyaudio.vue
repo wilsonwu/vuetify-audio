@@ -2,23 +2,23 @@
     <v-card style="text-align: center" :flat="flat == undefined || flat == false  ? false : true">
         <v-card-text>
             <v-btn outlined icon class="ma-2" :color="color" @click.native="playing ? pause() : play()" :disabled="!loaded">
-                <v-icon v-if="!playing || paused">mdi-play</v-icon>
-                <v-icon v-else>mdi-pause</v-icon>
+                <v-icon v-if="!playing || paused">{{ playIcon }}</v-icon>
+                <v-icon v-else>{{ pauseIcon }}</v-icon>
             </v-btn>
             <v-btn outlined icon class="ma-2" :color="color" @click.native="stop()" :disabled="!loaded">
-                <v-icon>mdi-stop</v-icon>
+                <v-icon>{{ stopIcon }}</v-icon>
             </v-btn>
             <v-btn outlined icon class="ma-2" :color="color" @click.native="mute()" :disabled="!loaded">
-                <v-icon v-if="!isMuted">mdi-volume-high</v-icon>
-                <v-icon v-else>mdi-volume-mute</v-icon>
+                <v-icon v-if="!isMuted">{{ volumeHighIcon }}</v-icon>
+                <v-icon v-else>{{ volumeMuteIcon }}</v-icon>
             </v-btn>
             <v-btn outlined icon class="ma-2" :color="color" @click.native="loaded ? download() : reload()" v-if="!loaded">
-                <v-icon>mdi-refresh</v-icon>
+                <v-icon>{{ refreshIcon }}</v-icon>
             </v-btn>
             <v-btn outlined icon class="ma-2" :color="color" @click.native="loaded ? download() : reload()" v-if="loaded && downloadable">
-                <v-icon>mdi-download</v-icon>
+                <v-icon>{{ downloadIcon }}</v-icon>
             </v-btn>
-            <v-slider v-model="playerVolume" prepend-icon="mdi-volume-high" max="1" step="0.01" min="0"></v-slider>
+            <v-slider v-model="playerVolume" :prepend-icon="volumeHighIcon" max="1" step="0.01" min="0"></v-slider>
             <v-progress-linear v-model="percentage" height="5" style="margin-top: 15px; margin-bottom: 15px;" @click.native="setPosition()" :disabled="!loaded"></v-progress-linear>
             <p>{{ currentTime }} / {{ duration }}</p>
         </v-card-text>
@@ -58,6 +58,34 @@
             downloadable: {
                 type: Boolean,
                 default: false
+            },
+            playIcon: {
+                type: String,
+                default: 'mdi-play'
+            },
+            pauseIcon: {
+                type: String,
+                default: 'mdi-pause'
+            },
+            stopIcon: {
+                type: String,
+                default: 'mdi-stop'
+            },
+            refreshIcon: {
+                type: String,
+                default: 'mdi-refresh'
+            },
+            downloadIcon: {
+                type: String,
+                default: 'mdi-download'
+            },
+            volumeHighIcon: {
+                type: String,
+                default: 'mdi-volume-high'
+            },
+            volumeMuteIcon: {
+                type: String,
+                default: 'mdi-volume-mute'
             }
         },
         computed: {
