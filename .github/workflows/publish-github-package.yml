@@ -1,0 +1,48 @@
+name: Publish GitHub Package
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          registry-url: https://npm.pkg.github.com
+          scope: '@wilsonwu'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build package
+        run: npm run build
+
+      - name: Prepare GitHub Packages metadata
+        run: |
+          npm pkg set name="@wilsonwu/vuetify-audio"
+          npm pkg set publishConfig.registry="https://npm.pkg.github.com"
+
+      - name: Publish package
+        shell: bash
+        run: |
+          package_spec=$(node -p "const pkg = require('./package.json'); pkg.name + '@' + pkg.version")
+          if npm view "$package_spec" version --registry=https://npm.pkg.github.com > /dev/null 2>&1; then
+            echo "$package_spec is already published"
+          else
+            npm publish
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
