@@ -69,6 +69,7 @@
             </div>
 
             <v-slider
+                v-if="showVolumeControl"
                 v-model="playerVolume"
                 aria-label="Volume"
                 hide-details
@@ -191,6 +192,10 @@ const props = defineProps({
     nativeControls: {
         type: Boolean,
         default: false
+    },
+    showVolumeControl: {
+        type: Boolean,
+        default: true
     },
     title: {
         type: String,

@@ -69,6 +69,7 @@ function handleEnded () {
 | `image` | `String` | `null` | Cover image URL. Overrides extracted cover art. |
 | `loop` | `Boolean` | `false` | Replays the audio automatically after it ends. |
 | `nativeControls` | `Boolean` | `false` | Shows native audio controls as a browser-specific fallback, including on iOS Safari. |
+| `showVolumeControl` | `Boolean` | `true` | Shows the volume slider. |
 | `title` | `String` | `null` | Track title. Overrides an extracted title. |
 | `flat` | `Boolean` | `false` | Uses the flat Vuetify card variant. |
 | `color` | `String` | `null` | Vuetify color for control buttons. |
@@ -84,7 +85,7 @@ function handleEnded () {
 | `waveform` | `Boolean` | `false` | Replaces the position slider with an interactive waveform. |
 | `waveformOptions` | `Object` | `{}` | Additional WaveSurfer options. The component owns `container`, `media`, and `url`. |
 
-Use kebab-case for multi-word props in templates, for example `audio-id`, `auto-play`, `play-icon`, and `can-play`.
+Use kebab-case for multi-word props in templates, for example `audio-id`, `auto-play`, `play-icon`, and `show-volume-control`.
 
 ## Events
 
