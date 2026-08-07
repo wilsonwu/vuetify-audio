@@ -49,8 +49,10 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.8",
+    "music-metadata": "^11.14.0",
     "vite": "^8.2.1",
     "vue": "^3.5.41",
-    "vuetify": "^4.1.8"
+    "vuetify": "^4.1.8",
+    "wavesurfer.js": "^7.12.11"
   }
 }
