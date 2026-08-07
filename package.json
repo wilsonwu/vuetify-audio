@@ -1,12 +1,26 @@
 {
   "name": "vuetify-audio",
-  "version": "0.3.3",
-  "description": "Vue.js audio files player with Vuetify UI framework",
-  "main": "index.js",
+  "version": "1.0.0",
+  "description": "Audio player component for Vue 3 and Vuetify 4",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/vuetify-audio.js",
+  "module": "./dist/vuetify-audio.js",
+  "exports": {
+    ".": {
+      "import": "./dist/vuetify-audio.js",
+      "default": "./dist/vuetify-audio.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "watch-http-server -s -p 8888",
-    "lint": "eslint --ext .js,.vue src"
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "test": "npm run build",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -28,17 +42,15 @@
   "bugs": {
     "url": "https://github.com/wilsonwu/vuetify-audio/issues"
   },
-  "homepage": "https://github.com/wilsonwu/vuetify-audio/issues#readme",
-  "devDependencies": {
-    "watch-http-server": "^0.7.6",
-    "babel-eslint": "^10.0.3",
-    "eslint": "^6.8.0",
-    "eslint-friendly-formatter": "^4.0.1",
-    "eslint-loader": "^3.0.3",
-    "eslint-plugin-html": "^6.0.0",
-    "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1"
+  "homepage": "https://github.com/wilsonwu/vuetify-audio#readme",
+  "peerDependencies": {
+    "vue": "^3.5.0",
+    "vuetify": "^4.0.0"
   },
-  "dependencies": {}
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.8",
+    "vite": "^8.2.1",
+    "vue": "^3.5.41",
+    "vuetify": "^4.1.8"
+  }
 }

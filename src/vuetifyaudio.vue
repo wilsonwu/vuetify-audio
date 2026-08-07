@@ -1,206 +1,402 @@
 <template>
-    <v-card style="text-align: center" :flat="flat == undefined || flat == false  ? false : true">
-        <v-card-text>
-            <v-btn outlined icon class="ma-2" :color="color" @click.native="playing ? pause() : play()" :disabled="!loaded">
-                <v-icon v-if="!playing || paused">{{ playIcon }}</v-icon>
-                <v-icon v-else>{{ pauseIcon }}</v-icon>
-            </v-btn>
-            <v-btn outlined icon class="ma-2" :color="color" @click.native="stop()" :disabled="!loaded">
-                <v-icon>{{ stopIcon }}</v-icon>
-            </v-btn>
-            <v-btn outlined icon class="ma-2" :color="color" @click.native="mute()" :disabled="!loaded">
-                <v-icon v-if="!isMuted">{{ volumeHighIcon }}</v-icon>
-                <v-icon v-else>{{ volumeMuteIcon }}</v-icon>
-            </v-btn>
-            <v-btn outlined icon class="ma-2" :color="color" @click.native="loaded ? download() : reload()" v-if="!loaded">
-                <v-icon>{{ refreshIcon }}</v-icon>
-            </v-btn>
-            <v-btn outlined icon class="ma-2" :color="color" @click.native="loaded ? download() : reload()" v-if="loaded && downloadable">
-                <v-icon>{{ downloadIcon }}</v-icon>
-            </v-btn>
-            <v-slider v-model="playerVolume" :prepend-icon="volumeHighIcon" max="1" step="0.01" min="0"></v-slider>
-            <v-progress-linear v-model="percentage" height="5" style="margin-top: 15px; margin-bottom: 15px;" @click.native="setPosition()" :disabled="!loaded"></v-progress-linear>
-            <p>{{ currentTime }} / {{ duration }}</p>
+    <v-card :variant="flat ? 'flat' : 'elevated'">
+        <v-card-text class="text-center">
+            <div class="d-flex flex-wrap justify-center">
+                <v-btn
+                    :aria-label="playing ? 'Pause' : 'Play'"
+                    class="ma-2"
+                    :color="color"
+                    :disabled="!loaded"
+                    icon
+                    variant="outlined"
+                    @click="togglePlayback"
+                >
+                    <v-icon>{{ playing ? pauseIcon : playIcon }}</v-icon>
+                </v-btn>
+                <v-btn
+                    aria-label="Stop"
+                    class="ma-2"
+                    :color="color"
+                    :disabled="!loaded"
+                    icon
+                    variant="outlined"
+                    @click="stop"
+                >
+                    <v-icon>{{ stopIcon }}</v-icon>
+                </v-btn>
+                <v-btn
+                    :aria-label="isMuted ? 'Unmute' : 'Mute'"
+                    class="ma-2"
+                    :color="color"
+                    :disabled="!loaded"
+                    icon
+                    variant="outlined"
+                    @click="mute"
+                >
+                    <v-icon>{{ isMuted ? volumeMuteIcon : volumeHighIcon }}</v-icon>
+                </v-btn>
+                <v-btn
+                    v-if="!loaded"
+                    aria-label="Reload"
+                    class="ma-2"
+                    :color="color"
+                    :disabled="!file"
+                    icon
+                    variant="outlined"
+                    @click="reload"
+                >
+                    <v-icon>{{ refreshIcon }}</v-icon>
+                </v-btn>
+                <v-btn
+                    v-else-if="downloadable"
+                    aria-label="Download"
+                    class="ma-2"
+                    :color="color"
+                    icon
+                    variant="outlined"
+                    @click="download"
+                >
+                    <v-icon>{{ downloadIcon }}</v-icon>
+                </v-btn>
+            </div>
+
+            <v-slider
+                v-model="playerVolume"
+                aria-label="Volume"
+                hide-details
+                :max="1"
+                :min="0"
+                :prepend-icon="isMuted || playerVolume === 0 ? volumeMuteIcon : volumeHighIcon"
+                :step="0.01"
+            />
+            <v-slider
+                aria-label="Playback position"
+                class="mt-3"
+                :disabled="!loaded || totalDuration <= 0"
+                hide-details
+                :max="100"
+                :min="0"
+                :model-value="percentage"
+                :step="0.1"
+                :thumb-size="12"
+                :track-size="5"
+                @update:model-value="setPosition"
+            />
+            <p class="mb-0 mt-2">{{ currentTime }} / {{ duration }}</p>
         </v-card-text>
-        <audio id="player" ref="player" v-on:ended="ended" v-on:canplay="canPlay" :src="file"></audio>
+
+        <audio
+            ref="player"
+            :src="file || undefined"
+            preload="metadata"
+            @canplay="handleCanPlay"
+            @durationchange="syncDuration"
+            @ended="handleEnded"
+            @error="handleError"
+            @loadedmetadata="syncDuration"
+            @pause="handlePause"
+            @play="handlePlay"
+            @timeupdate="handleTimeUpdate"
+        />
     </v-card>
 </template>
-<script>
-    const formatTime = second => new Date(second * 1000).toISOString().substr(11, 8);
 
-    export default {
-        name: 'vuetify-audio',
-        props: {
-            flat: {
-                type: Boolean,
-                default: false
-            },
-            file: {
-                type: String,
-                default: null
-            },
-            autoPlay: {
-                type: Boolean,
-                default: false
-            },
-            ended: {
-                type: Function,
-                default: () => {},
-            },
-            canPlay: {
-                type: Function,
-                default: () => {},
-            },
-            color: {
-                type: String,
-                default: null
-            },
-            downloadable: {
-                type: Boolean,
-                default: false
-            },
-            playIcon: {
-                type: String,
-                default: 'mdi-play'
-            },
-            pauseIcon: {
-                type: String,
-                default: 'mdi-pause'
-            },
-            stopIcon: {
-                type: String,
-                default: 'mdi-stop'
-            },
-            refreshIcon: {
-                type: String,
-                default: 'mdi-refresh'
-            },
-            downloadIcon: {
-                type: String,
-                default: 'mdi-download'
-            },
-            volumeHighIcon: {
-                type: String,
-                default: 'mdi-volume-high'
-            },
-            volumeMuteIcon: {
-                type: String,
-                default: 'mdi-volume-mute'
-            }
-        },
-        computed: {
-            duration: function () {
-                return this.audio ? formatTime(this.totalDuration) : ''
-            },
-        },
-        data () {
-            return {
-                firstPlay: true,
-                isMuted: false,
-                loaded: false,
-                playing: false,
-                paused: false,
-                percentage: 0,
-                currentTime: '00:00:00',
-                audio: undefined,
-                totalDuration: 0,
-                playerVolume: 0.5
-            }
-        },
+<script setup>
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { VBtn } from 'vuetify/components/VBtn'
+import { VCard, VCardText } from 'vuetify/components/VCard'
+import { VIcon } from 'vuetify/components/VIcon'
+import { VSlider } from 'vuetify/components/VSlider'
 
-        methods: {
-            setPosition () {
-                this.audio.currentTime = parseInt(this.audio.duration / 100 * this.percentage);
-            },
-            stop () {
-                this.audio.pause()
-                this.paused = true
-                this.playing = false
-                this.audio.currentTime = 0
-            },
-            play () {
-                if (this.playing) return
-                this.audio.play().then(_ => this.playing = true)
-                this.paused = false
-            },
-            pause () {
-                this.paused = !this.paused;
-                (this.paused) ? this.audio.pause() : this.audio.play()
-            },
-            download () {
-                this.audio.pause()
-                window.open(this.file, 'download')
-            },
-            mute () {
-                this.isMuted = !this.isMuted
-                this.audio.muted = this.isMuted
-            },
-            reload () {
-                this.audio.load();
-            },
-            _handleLoaded: function () {
-                if (this.audio.readyState >= 2) {
-                    if (this.audio.duration === Infinity) {
-                        // Fix duration for streamed audio source or blob based
-                        // https://stackoverflow.com/questions/38443084/how-can-i-add-predefined-length-to-audio-recorded-from-mediarecorder-in-chrome/39971175#39971175
-                        this.audio.currentTime = 1e101;
-                        this.audio.ontimeupdate = () => {
-                            this.audio.ontimeupdate = () => {}
-                            this.audio.currentTime = 0
-                            this.totalDuration = parseInt(this.audio.duration)
-                            this.loaded = true;
-                        }
-                    } else {
-                        this.totalDuration = parseInt(this.audio.duration)
-                        this.loaded = true
-                    }
+defineOptions({ name: 'VuetifyAudio' })
 
-                    if (this.autoPlay) this.audio.play()
-
-                } else {
-                    throw new Error('Failed to load sound file')
-                }
-            },
-            _handlePlayingUI: function (e) {
-                this.audio.volume = this.playerVolume
-                this.percentage = this.audio.currentTime / this.audio.duration * 100
-                this.currentTime = formatTime(this.audio.currentTime)
-                this.playing = true
-            },
-            _handlePlayPause: function (e) {
-                if (e.type === 'play' && this.firstPlay) {
-                    // in some situations, audio.currentTime is the end one on chrome
-                    this.audio.currentTime = 0;
-                    if (this.firstPlay) {
-                        this.firstPlay = false;
-                    }
-                }
-                if (e.type === 'pause' && this.paused === false && this.playing === false) {
-                    this.currentTime = '00:00:00'
-                }
-            },
-            _handleEnded () {
-                this.paused = this.playing = false;
-            },
-            init: function () {
-                this.audio.addEventListener('timeupdate', this._handlePlayingUI);
-                this.audio.addEventListener('loadeddata', this._handleLoaded);
-                this.audio.addEventListener('pause', this._handlePlayPause);
-                this.audio.addEventListener('play', this._handlePlayPause);
-                this.audio.addEventListener('ended', this._handleEnded);
-            },
-        },
-        mounted () {
-            this.audio = this.$refs.player;
-            this.init();
-        },
-        beforeDestroy () {
-            this.audio.removeEventListener('timeupdate', this._handlePlayingUI)
-            this.audio.removeEventListener('loadeddata', this._handleLoaded)
-            this.audio.removeEventListener('pause', this._handlePlayPause)
-            this.audio.removeEventListener('play', this._handlePlayPause)
-            this.audio.removeEventListener('ended', this._handleEnded);
-        }
-
+const props = defineProps({
+    flat: {
+        type: Boolean,
+        default: false
+    },
+    file: {
+        type: String,
+        default: null
+    },
+    autoPlay: {
+        type: Boolean,
+        default: false
+    },
+    ended: {
+        type: Function,
+        default: () => {}
+    },
+    canPlay: {
+        type: Function,
+        default: () => {}
+    },
+    color: {
+        type: String,
+        default: null
+    },
+    downloadable: {
+        type: Boolean,
+        default: false
+    },
+    playIcon: {
+        type: String,
+        default: 'mdi-play'
+    },
+    pauseIcon: {
+        type: String,
+        default: 'mdi-pause'
+    },
+    stopIcon: {
+        type: String,
+        default: 'mdi-stop'
+    },
+    refreshIcon: {
+        type: String,
+        default: 'mdi-refresh'
+    },
+    downloadIcon: {
+        type: String,
+        default: 'mdi-download'
+    },
+    volumeHighIcon: {
+        type: String,
+        default: 'mdi-volume-high'
+    },
+    volumeMuteIcon: {
+        type: String,
+        default: 'mdi-volume-mute'
     }
+})
+
+const emit = defineEmits(['can-play', 'ended', 'error'])
+
+const player = ref(null)
+const loaded = ref(false)
+const playing = ref(false)
+const isMuted = ref(false)
+const currentTimeSeconds = ref(0)
+const totalDuration = ref(0)
+const playerVolume = ref(0.5)
+const autoPlayAttempted = ref(false)
+let durationProbe = null
+
+const currentTime = computed(() => formatTime(currentTimeSeconds.value))
+const duration = computed(() => formatTime(totalDuration.value))
+const percentage = computed(() => {
+    if (totalDuration.value <= 0) return 0
+
+    return Math.min(100, currentTimeSeconds.value / totalDuration.value * 100)
+})
+
+function formatTime (seconds) {
+    const value = Number.isFinite(seconds) ? Math.max(0, Math.floor(seconds)) : 0
+    const hours = Math.floor(value / 3600).toString().padStart(2, '0')
+    const minutes = Math.floor(value % 3600 / 60).toString().padStart(2, '0')
+    const remainingSeconds = (value % 60).toString().padStart(2, '0')
+
+    return `${hours}:${minutes}:${remainingSeconds}`
+}
+
+function resetPlaybackState () {
+    cancelDurationProbe()
+    loaded.value = false
+    playing.value = false
+    currentTimeSeconds.value = 0
+    totalDuration.value = 0
+    autoPlayAttempted.value = false
+}
+
+function cancelDurationProbe () {
+    if (!durationProbe) return
+
+    durationProbe.audio.removeEventListener('timeupdate', durationProbe.handler)
+    durationProbe = null
+}
+
+function probeInfiniteDuration (audio) {
+    if (durationProbe) return
+
+    const previousTime = audio.currentTime
+    const handler = () => {
+        durationProbe = null
+        syncDuration()
+        const restoredTime = Number.isFinite(audio.duration)
+            ? Math.min(previousTime, audio.duration)
+            : 0
+        audio.currentTime = restoredTime
+        currentTimeSeconds.value = restoredTime
+    }
+
+    durationProbe = { audio, handler }
+    audio.addEventListener('timeupdate', handler, { once: true })
+
+    try {
+        audio.currentTime = Number.MAX_SAFE_INTEGER
+    } catch {
+        cancelDurationProbe()
+    }
+}
+
+function syncDuration () {
+    const audio = player.value
+    const value = audio?.duration
+
+    if (Number.isFinite(value) && value >= 0) {
+        totalDuration.value = value
+    } else if (value === Infinity) {
+        probeInfiniteDuration(audio)
+    }
+}
+
+function handleTimeUpdate () {
+    const value = player.value?.currentTime
+
+    if (Number.isFinite(value)) {
+        currentTimeSeconds.value = value
+    }
+
+    if (totalDuration.value === 0) syncDuration()
+}
+
+function handleCanPlay (event) {
+    loaded.value = true
+    syncDuration()
+    props.canPlay(event)
+    emit('can-play', event)
+
+    if (props.autoPlay && !autoPlayAttempted.value) {
+        autoPlayAttempted.value = true
+        void play().catch(() => {})
+    }
+}
+
+function handlePlay () {
+    playing.value = true
+}
+
+function handlePause () {
+    playing.value = false
+}
+
+function handleEnded (event) {
+    playing.value = false
+    currentTimeSeconds.value = totalDuration.value
+    props.ended(event)
+    emit('ended', event)
+}
+
+function handleError (event) {
+    loaded.value = false
+    playing.value = false
+    emit('error', player.value?.error || event)
+}
+
+function setPosition (value) {
+    const audio = player.value
+
+    if (!audio || !Number.isFinite(audio.duration) || audio.duration <= 0) return
+
+    const nextPercentage = Math.min(100, Math.max(0, Number(value)))
+    const nextTime = audio.duration * nextPercentage / 100
+    audio.currentTime = nextTime
+    currentTimeSeconds.value = nextTime
+}
+
+async function play () {
+    const audio = player.value
+
+    if (!audio || playing.value) return
+    if (audio.ended) audio.currentTime = 0
+
+    try {
+        await audio.play()
+    } catch (error) {
+        emit('error', error)
+        throw error
+    }
+}
+
+function pause () {
+    player.value?.pause()
+}
+
+function togglePlayback () {
+    if (playing.value) {
+        pause()
+    } else {
+        void play().catch(() => {})
+    }
+}
+
+function stop () {
+    const audio = player.value
+
+    if (!audio) return
+    audio.pause()
+    audio.currentTime = 0
+    currentTimeSeconds.value = 0
+    playing.value = false
+}
+
+function mute () {
+    const audio = player.value
+
+    if (!audio) return
+    isMuted.value = !isMuted.value
+    audio.muted = isMuted.value
+}
+
+function reload () {
+    const audio = player.value
+
+    if (!audio) return
+    resetPlaybackState()
+    audio.load()
+}
+
+function download () {
+    if (!props.file) return
+
+    pause()
+    const link = document.createElement('a')
+    link.href = props.file
+    link.download = ''
+    link.rel = 'noopener'
+    link.target = '_blank'
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+}
+
+watch(playerVolume, value => {
+    if (player.value) player.value.volume = value
+})
+
+watch(() => props.file, async () => {
+    resetPlaybackState()
+    await nextTick()
+    player.value?.load()
+})
+
+watch(() => props.autoPlay, value => {
+    if (value && loaded.value && !autoPlayAttempted.value) {
+        autoPlayAttempted.value = true
+        void play().catch(() => {})
+    }
+})
+
+onMounted(() => {
+    if (!player.value) return
+
+    player.value.volume = playerVolume.value
+    if (player.value.readyState >= 2) {
+        loaded.value = true
+        syncDuration()
+    }
+})
+
+onBeforeUnmount(cancelDurationProbe)
+
+defineExpose({ download, mute, pause, play, reload, stop })
 </script>

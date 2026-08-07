@@ -1,103 +1,95 @@
 # vuetify-audio
-<a href="https://www.npmjs.com/package/vuetify-audio"><img src="https://img.shields.io/npm/dt/vuetify-audio.svg" alt="Downloads"></a>
-<a href="https://www.npmjs.com/package/vuetify-audio"><img src="https://img.shields.io/npm/v/vuetify-audio.svg" alt="Version"></a>
-<a href="https://www.npmjs.com/package/vuetify-audio"><img src="https://img.shields.io/npm/l/vuetify-audio.svg" alt="License"></a>
 
-Vue.js sound audio player base on Vuetify UI framework. Covers audio-tag API and adds more.
+[![Downloads](https://img.shields.io/npm/dt/vuetify-audio.svg)](https://www.npmjs.com/package/vuetify-audio)
+[![Version](https://img.shields.io/npm/v/vuetify-audio.svg)](https://www.npmjs.com/package/vuetify-audio)
+[![License](https://img.shields.io/npm/l/vuetify-audio.svg)](https://www.npmjs.com/package/vuetify-audio)
 
-## Features
-- Support most of audio play in this component.
-- You can set the color you want for all component buttons.
-- Support download the audio file.
-- After audio playing finished or before start the playing, you can do something.
-- Support Dark mode of Vuetify.
-- Support auto play, but if user didn't interact with the document first, the audio can't be played.
-- Support turn on and off audio download button.
-- Support disable the Vuetify Card style, and you can use this component in your own Vuetify Card of your page.
-- You can set custom icons supported by vuetify v-icon component.
+An audio player component for Vue 3 and Vuetify 4. It supports playback, seeking, volume control, muting, downloads, autoplay, custom icons, and Vuetify themes.
 
-### Demo
+## Compatibility
 
-https://wilsonwu.github.io/dist/index.html#/vuetifyaudio
+| vuetify-audio | Vue | Vuetify |
+| --- | --- | --- |
+| 1.x | 3.5+ | 4.x |
+| 0.x | 2.x | 2.x |
 
-### Installation
+## Installation
 
-Use npm: ```npm install vuetify-audio --save```
-
-### Prepare
-At first make sure your project is Vue project, and has ```Vuetify``` as UI framework:
-1. Install Vuetify:
+```sh
+npm install vuetify-audio vue@^3.5 vuetify@^4 @mdi/font
 ```
-npm install vuetify --save-dev
-```
-2. Add Vuetify to ```app.js``` or ```main.js```:
+
+Configure Vuetify in your application entry point:
+
 ```js
-import Vuetify from 'vuetify';
-import 'vuetify/dist/vuetify.min.css';
+import { createApp } from 'vue'
+import { createVuetify } from 'vuetify'
+import 'vuetify/styles'
+import '@mdi/font/css/materialdesignicons.css'
+import App from './App.vue'
 
-Vue.use(Vuetify);
+const app = createApp(App)
+const vuetify = createVuetify()
+
+app.use(vuetify).mount('#app')
 ```
 
-You also can use Vue plugin to install ```Vuetify``` by only one line command:
-```
-vue add vuetify
-```
+## Usage
 
-Node: Make sure you are using the default Vuetify iconfont (mdi) or override the icon attributes with some other supported by v-icon component.
+```vue
+<script setup>
+import VuetifyAudio from 'vuetify-audio'
 
-### Usage
-Add below code into your ```<script>```:
-```js
-export default {
-    components: {
-        VuetifyAudio: () => import('vuetify-audio'),
-    },
-    data: () => ({
-        file: 'http://www.hochmuth.com/mp3/Boccherini_Concerto_478-1.mp3',
-    }),
+const file = 'https://example.com/audio.mp3'
+
+function handleEnded () {
+    console.log('Playback finished')
 }
+</script>
 
+<template>
+    <VuetifyAudio
+        :file="file"
+        color="success"
+        downloadable
+        @ended="handleEnded"
+    />
+</template>
 ```
 
-And below code in the ```<template>```:
-```html
-<vuetify-audio :file="file" color="success" :ended="audioFinish" downloadable></vuetify-audio>
-```
+## Props
 
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `file` | `String` | `null` | Audio source URL. |
+| `autoPlay` | `Boolean` | `false` | Attempts playback when the source can play. Browser autoplay rules still apply. |
+| `downloadable` | `Boolean` | `false` | Shows the download button. |
+| `flat` | `Boolean` | `false` | Uses the flat Vuetify card variant. |
+| `color` | `String` | `null` | Vuetify color for control buttons. |
+| `ended` | `Function` | no-op | Legacy callback invoked when playback ends. Prefer the `ended` event. |
+| `canPlay` | `Function` | no-op | Legacy callback invoked when audio can play. Prefer the `can-play` event. |
+| `playIcon` | `String` | `mdi-play` | Play icon. |
+| `pauseIcon` | `String` | `mdi-pause` | Pause icon. |
+| `stopIcon` | `String` | `mdi-stop` | Stop icon. |
+| `refreshIcon` | `String` | `mdi-refresh` | Reload icon. |
+| `downloadIcon` | `String` | `mdi-download` | Download icon. |
+| `volumeHighIcon` | `String` | `mdi-volume-high` | Volume icon. |
+| `volumeMuteIcon` | `String` | `mdi-volume-mute` | Muted icon. |
 
-### Attributes
+Use kebab-case for multi-word props in templates, for example `auto-play`, `play-icon`, and `can-play`.
 
- - **file** (String) (Required): Set audio file for the audio player
- - **ended** (Function) (Optional): Set callback function name after audio finish
- - **canPlay** (Function) (Optional): Set callback function name when audio ready for playing
- - **color** (String) (Optional): Set all component buttons color
- - **autoPlay** (Boolean) (Optional, default is false): Add it to make the audio auto play, but in some web browsers maybe failed, because some browsers need user active in the page first then allow sound auto play.
- - **downloadable** (Boolean) (Optional, default is false): Add it to let the audio file can be downloaded.
- - **flat** (Boolean) (Optional, default is false): When set to true, make the Vuetify Card style to flat, that you can combine other information/image/data with this control in your page.
- - **playIcon** (String) (Optional, default is mdi-play): Set the icon for play
- - **pauseIcon** (String) (Optional, default is mdi-pause): Set the icon for pause
- - **stopIcon** (String) (Optional, default is mdi-stop): Set the icon for stop
- - **refreshIcon** (String) (Optional, default is mdi-refresh): Set the icon for refresh
- - **downloadIcon** (String) (Optional, default is mdi-download): Set the icon for download
- - **volumeHighIcon** (String) (Optional, default is mdi-volume-high): Set the icon for volume
- - **volumeMuteIcon** (String) (Optional, default is mdi-volume-mute): Set the icon for mute
+## Events
 
-### Known Issues
-1. Audio play pregress bar can't support drag, only support click.
+| Event | Payload | Description |
+| --- | --- | --- |
+| `can-play` | Native `Event` | The audio source can start playing. |
+| `ended` | Native `Event` | Playback finished. |
+| `error` | `MediaError` or `Error` | Loading or playback failed, including blocked autoplay. |
 
-### ToDo
+## Component methods
 
- - ~~Create online demo~~
- - ~~Create npm install~~
- - ~~Add customize collor for component~~
- - ~~Add event for end audio~~
- - ~~Add auto play audio~~
- - ~~Add downloadable property for audio file~~
- - ~~Fully support dark mode~~
- - ~~Add prop for Card flat~~
- - ~~Add increase or decrease volume of audio~~
- - ~~Add props for custom icons~~
- 
-### License
+A component template ref exposes `play()`, `pause()`, `stop()`, `mute()`, `reload()`, and `download()`.
+
+## License
 
 MIT
